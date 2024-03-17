@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-home {
+    background-image: url("./pages//main//images//home//homeImg.jpg");
+    background-size:cover;
+    background-position:left;
+    background-repeat: no-repeat;
+    height: 30vh;
+    /* opacity: 30%; */
+    
+}
+.bg-admin {
+    background-image: url("../public//images//iiitg-pic.webp");
+    background-size:cover;
+    background-position:left;
+    background-repeat: no-repeat;
+    height: 30vh;
+    /* background:  bg-gradient-to-r from-blue-500 to-purple-500  */
+    ;
+}
+.bg-bottom {
+    background-image: url("../public//images//iiitg-evening.webp");
+    background-size:cover;
+    background-position:left;
+    background-repeat: no-repeat;
+    height: 63vh;
+    /* background:  bg-gradient-to-r from-blue-500 to-purple-500  */
+    ;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

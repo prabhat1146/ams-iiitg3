@@ -1,0 +1,23 @@
+.dropdown{
+    display: flex;
+    justify-content: flex-start;
+    width: 75vw;
+    height: 100vh;
+    background-color: #625e5e;
+    align-items: center;
+    flex-direction: column;
+}
+.profile{
+    /* background: #000; */
+}
+
+.pic{
+    width: 5rem;
+    height: 5rem;
+    background: #f5f3f3;
+    border-radius: 50%;
+}
+
+hr{
+    background: #eae4e4;
+}

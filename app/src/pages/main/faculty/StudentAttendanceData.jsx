@@ -1,0 +1,232 @@
+import React, { useState, useEffect } from 'react';
+import { fetchDataFromCourse } from './SearchFromCourse';
+
+const StudentAttendanceData = (props) => {
+  const [semesterType, setSemesterType] = useState('odd');
+  const [courses, setCourses] = useState([
+
+  ]);
+  const [selectedSemester, setSelectedSemester] = useState(null);
+  const [studentsEmail, setStudentsEmail] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState();// contains id,name and sem
+  const [date, setDate] = useState(new Date())
+  const [selectedCourseID, setSelectedCourseID] = useState();
+  const [studentAdmissionYear, setStudentAdmissionYear] = useState();
+  const [attendance, setAttendance] = useState();
+  const [attendanceData, setAttendanceData] = useState([])
+  const BASEURL=process.env.REACT_APP_BASEURL
+  useEffect(() => {
+    const url=`${BASEURL}/student/find`
+    fetch(url)
+    .then((res)=>{
+      if(res.ok){
+        return res.json()
+      }else{
+        return []
+      }
+    })
+    .then((res)=>{
+      res.map((email)=>studentsEmail.push(email))
+    })
+    
+  })
+
+ 
+
+
+  const oddSemesters = [1, 3, 5, 7];
+  const evenSemesters = [2, 4, 6, 8];
+
+
+
+  useEffect(() => {
+    const url = `${BASEURL}/student/searchCourses?studentEmail=${'email'}`;
+
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setCourses((prevData) => [...prevData, ...data]);
+        // console.log(data);
+      })
+
+
+      .catch((error) => {
+        console.error('Error fetching or processing courses:', error);
+        // Handle error state or display an error message to the user
+      });
+  }, [ selectedSemester]);
+
+  // useEffect(() => {
+
+  //   let url = `${BASEURL}/student/find`
+  //   let data = {
+  //     studentEmail: props.studentData.studentEmail
+  //   }
+  //   fetchDataFromCourse(url, data)
+
+  //     .then((res) => {
+  //       setStudentAdmissionYear(res[0].studentAdmissionYear)
+  //       // console.log(studentAdmissionYear)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+
+
+  //   //  console.log('a',attendance)
+
+  // }, [])
+
+  // useEffect(() => {
+  //   // setAttendanceData([])
+  //   const url = `${BASEURL}/attendance/attendanceData`
+  //   const attendance = selectedCourse?.map((course) => {
+  //     let data = {
+  //       studentEmail: 'email',
+  //       studentAdmissionYear: studentAdmissionYear,
+  //       courseID: course.courseID
+  //     }
+  //     // console.log('d', course.courseID)
+  //     fetchDataFromCourse(url, data)
+  //       .then((res) => {
+  //         // console.log('dt', course.courseID)
+  //         attendanceData.push({
+  //           courseID: course.courseID,
+  //           courseName:course.courseName,
+  //           present: res.present,
+  //           total: 2
+  //         })
+
+  //         // console.log('r', course.courseID, attendanceData)
+  //       })
+  //     return 0
+  //   })
+  // }, [selectedSemester])
+
+
+  // useEffect(() => {
+  //   const url = `${BASEURL}/attendance/attendanceTotalData`
+  //   const attendance = selectedCourse?.map((course) => {
+  //     let data = {
+  //       // studentEmail: email,
+  //       studentAdmissionYear: studentAdmissionYear,
+  //       courseID: course.courseID
+  //     }
+  //     // console.log('d', course.courseID)
+  //     fetchDataFromCourse(url, data)
+  //       .then((res) => {
+  //         // console.log('dtx', res)
+  //         setAttendanceData((prevData) => {
+  //           const updatedData = prevData.map((courseData) => {
+  //             if (courseData.courseID === course.courseID) {
+  //               // console.log('dtxy', course.courseID)
+  //               return {
+  //                 ...courseData,
+  //                 total: res.length, // Update the total based on your logic
+  //               };
+  //             }
+  //             return courseData;
+  //           });
+          
+  //           return updatedData;
+  //         });
+          
+
+  //         // console.log('r',attendanceData)
+  //       })
+  //     return 0
+  //   })
+  // }, [selectedSemester])
+
+  const handleSemesterChange = (semester) => {
+    // You can perform any action when a semester is selected
+    setSelectedSemester(semester)
+    setAttendanceData([])
+    const cour = courses.find((course) => course.semester === `${semester}`)
+    // courses.find
+    if (cour) {
+      setSelectedCourse((cour.courses))
+      console.log((selectedCourse))
+    } else {
+      setSelectedCourse([{ courseName: "Course not found" }])
+    }
+    // console.log(semester)
+  };
+
+  const handleCourseClick = (courseId) => {
+    // Handle the click event for a specific course
+    setSelectedCourseID(courseId)
+    console.log(`Course clicked with ID: ${courseId}`);
+    // Add your navigation logic or any other action here
+  };
+
+  return (
+    <div className="m-8 flex items-center flex-col justify-center bg-gradient-to-r from-blue-500 to-purple-500">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
+        <h1 className="text-2xl font-bold mb-4">Semester Selection</h1>
+        <div className="flex items-center m-4">
+          <label className="inline-flex items-center">
+            <input
+              type="radio"
+              value="odd"
+              checked={semesterType === 'odd'}
+              onChange={() => setSemesterType('odd')}
+              className="form-radio h-5 w-5 text-blue-500"
+            />
+            <span className="ml-2">Odd Semester</span>
+          </label>
+          <label className="inline-flex items-center ml-4">
+            <input
+              type="radio"
+              value="even"
+              checked={semesterType === 'even'}
+              onChange={() => setSemesterType('even')}
+              className="form-radio h-5 w-5 text-blue-500"
+            />
+            <span className="ml-2">Even Semester</span>
+          </label>
+        </div>
+        <div className={`grid ${semesterType === 'odd' ? 'grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4' : 'grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4'} gap-4`}>
+          {(semesterType === 'odd' ? oddSemesters : evenSemesters).map((semester) => (
+            <div key={semester} className="bg-gray-100 p-4 rounded-md">
+              <label className="inline-flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="semester"
+                  value={semester}
+                  onChange={() => handleSemesterChange(semester)}
+                  className="form-radio h-5 w-5 text-blue-500"
+                />
+                <span className="ml-2">{`Semester ${semester}`}</span>
+              </label>
+            </div>
+          ))}
+        </div>
+
+      </div>
+      <div className="container  mx-auto w-11/12 p-4">
+        <h1 className="text-3xl mx-auto font-bold mb-4">Course List ( {attendanceData.length} )</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {attendanceData?.map(course => (
+            <div
+              key={course.courseID}
+              className="bg-white p-4 rounded-md shadow-md cursor-pointer"
+              onClick={() => handleCourseClick(course.courseID)}
+            >
+              
+              <h2 className="text-lg font-semibold mb-2">{course.courseName} <h1 className={`text-lg font-semibold mb-2 ${(course.total===0?0:course.present*100/course.total)>75?('text-green-600'):('text-red-600')} `}>Attendance : {course.present}/{course.total} = {course.total===0?0:course.present*100/course.total}%</h1></h2>
+
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default StudentAttendanceData;
